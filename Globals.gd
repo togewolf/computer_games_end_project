@@ -2,6 +2,7 @@
 extends Node
 
 enum Element { WATER, FIRE, NATURE, LIGHT }
+enum ProjectileMode { SIMPLE, LOCATION, TARGETED }
 
 # Defines what each element DEFEATS
 const BEATS = {
@@ -9,6 +10,13 @@ const BEATS = {
 	Element.FIRE: Element.NATURE,
 	Element.NATURE: Element.LIGHT,
 	Element.LIGHT: Element.WATER
+}
+
+# Defines the mana cost multipliers per projectile mode
+const PROJECTILE_MANA_COSTS = {
+	ProjectileMode.SIMPLE : 1.0,
+	ProjectileMode.LOCATION : 1.25,
+	ProjectileMode.TARGETED : 2.5
 }
 
 # Helper to find the optimal counter

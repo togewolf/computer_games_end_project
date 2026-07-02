@@ -4,6 +4,9 @@ extends Wizard
 @onready var speed_slider = $"../SpeedSlider"
 @onready var randomness_slider = $"../RandomnessSlider"
 
+# Determines how precise our wizard can aim to its target location.
+var jitter_radius = 128.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Setup Agent AI Timer
@@ -12,7 +15,6 @@ func _ready() -> void:
 	agent_timer.timeout.connect(_agent_ai_tick)
 	agent_timer.start(speed_slider.value)
 	speed_slider.value_changed.connect(func(val): agent_timer.wait_time = val)
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -26,8 +28,17 @@ func _agent_ai_tick():
 	# Apply randomness slider logic
 	if randf() < randomness_slider.value:
 		element_to_cast = randi() % 4 as Globals.Element
-		
-	self.cast_spell(element_to_cast, opponent.global_position)
+
+	# Determine where we want to aim
+	var target_location = opponent.global_position
+
+	# Spell weaving
+	var jitter_angle    = randf() * 360
+	var jitter_distance = randf() * jitter_radius
+	var aim_position    = target_location + Vector2.from_angle(jitter_angle) * jitter_distance
+	
+			
+	self.cast_spell(element_to_cast, aim_position)
 
 
 func _calculate_agent_move() -> Globals.Element:

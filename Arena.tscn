@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d2oabdi6yyoed" path="res://arena.gd" id="1_u45fm"]
 [ext_resource type="PackedScene" uid="uid://dhvs7pp2lkc80" path="res://Wizard.tscn" id="2_vbyki"]
+[ext_resource type="Script" uid="uid://cowp8cjhf6el" path="res://player.gd" id="3_uj4qe"]
 [ext_resource type="Script" uid="uid://k3xqv7pcbf63" path="res://agent.gd" id="3_vbyki"]
 
 [node name="Arena" type="Node2D" unique_id=2107833212]
@@ -10,6 +11,7 @@ script = ExtResource("1_u45fm")
 [node name="WizardPlayer" parent="." unique_id=586138894 instance=ExtResource("2_vbyki")]
 position = Vector2(237, 625)
 scale = Vector2(0.2, 0.2)
+script = ExtResource("3_uj4qe")
 
 [node name="WizardAgent" parent="." unique_id=1876664981 instance=ExtResource("2_vbyki")]
 position = Vector2(233, 72.00006)

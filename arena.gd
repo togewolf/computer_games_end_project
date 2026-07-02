@@ -23,3 +23,4 @@ func _process(_delta):
 	elif Input.is_action_just_pressed("cast_fire"): player.cast_spell(Globals.Element.FIRE, get_global_mouse_position())
 	elif Input.is_action_just_pressed("cast_nature"): player.cast_spell(Globals.Element.NATURE, get_global_mouse_position())
 	elif Input.is_action_just_pressed("cast_light"): player.cast_spell(Globals.Element.LIGHT, get_global_mouse_position())
+	
