@@ -1,0 +1,12 @@
+# Godot 4+
+.godot/
+
+# Imported assets
+*.import
+
+# Export files
+/export/
+
+# OS files
+.DS_Store
+Thumbs.db
