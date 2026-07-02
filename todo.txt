@@ -1,17 +1,15 @@
 Todo:
 	- better graphics (Nandita)
+		- draw sprites for projectiles
+		- wizards (put them on towers)
+		- arena background
+		- UI elements
+		
+		
 	- connect keyword detection model (Thomas)
+	
+	
 	- more sophisticated agent (Robin)
-
-
-Work in parallel:
-	- 1 person responsible for visuals (arena & wizards & projectiles & buttons & score)
-	- 1 person responsible for game logic (health & damage, signals, gameplay mechanics)
-	- 1 person responsible for keyword detection and model behavior (Thomas)
-
-Next steps:
-	- I (Thomas) will define interfaces so everyone can start working in parallel
-	- Everyone does their part, in parallel
-	- Game baseline finished (probably enough to get most of the points if presented well)
-	- Optional implementation of additional mechanics to allow for more intelligent agent behavior 
-		(decided after implementing baseline)
+		- Find a paper with agent techniques which could be applied to this usecase
+		- Additional gameplay  (e.g. projectiles that take a different path/shields/...)
+		 s.t. more advanced strategies are possible
