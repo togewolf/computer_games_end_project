@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://75qi6d0barv5"]
+
+[ext_resource type="Script" uid="uid://d2oabdi6yyoed" path="res://arena.gd" id="1_u45fm"]
+[ext_resource type="PackedScene" uid="uid://dhvs7pp2lkc80" path="res://Wizard.tscn" id="2_vbyki"]
+
+[node name="Arena" type="Node2D" unique_id=2107833212]
+script = ExtResource("1_u45fm")
+
+[node name="WizardPlayer" parent="." unique_id=586138894 instance=ExtResource("2_vbyki")]
+position = Vector2(237, 625)
+scale = Vector2(0.2, 0.2)
+
+[node name="WizardAgent" parent="." unique_id=1876664981 instance=ExtResource("2_vbyki")]
+position = Vector2(233, 72.00006)
+scale = Vector2(0.2, 0.2)
+is_player = false
+
+[node name="AgentHP" type="ProgressBar" parent="." unique_id=985113576]
+offset_left = 57.0
+offset_top = 29.0
+offset_right = 174.0
+offset_bottom = 56.0
+
+[node name="PlayerHP" type="ProgressBar" parent="." unique_id=1769762228]
+offset_left = 77.0
+offset_top = 615.0
+offset_right = 173.0
+offset_bottom = 642.0
+
+[node name="SpeedSlider" type="HSlider" parent="." unique_id=1202257815]
+offset_left = 371.0
+offset_top = 85.0
+offset_right = 461.0
+offset_bottom = 101.0
+min_value = 0.3
+max_value = 3.0
+step = 0.1
+value = 1.5
+
+[node name="Label" type="Label" parent="SpeedSlider" unique_id=127112415]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -30)
+text = "SpeedSlider"
+
+[node name="RandomnessSlider" type="HSlider" parent="." unique_id=626330310]
+offset_left = 371.0
+offset_top = 39.0
+offset_right = 468.0
+offset_bottom = 55.0
+max_value = 1.0
+step = 0.01
+value = 0.2
+
+[node name="Label" type="Label" parent="RandomnessSlider" unique_id=43656480]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -30)
+text = "Randomness"
