@@ -5,27 +5,59 @@ extends Node2D
 
 @onready var player_hp_bar = $PlayerHP
 @onready var agent_hp_bar = $AgentHP
+@onready var player_mana_bar = $PlayerMana
+@onready var agent_mana_bar = $AgentMana
+
 @onready var voice_manager = $VoiceManager 
 
 func _ready():
 	player_hp_bar.max_value = player.max_health
 	player_hp_bar.value = player.max_health
+	player_mana_bar.max_value = player.max_mana
+	player_mana_bar.value = player.max_mana
+	
 	player.health_changed.connect(func(hp): player_hp_bar.value = hp)
+	player.mana_changed.connect(func(mana): player_mana_bar.value = mana)
+	
 	player.opponent = agent;
 	
 	agent_hp_bar.max_value = agent.max_health
 	agent_hp_bar.value = agent.max_health
+	agent_mana_bar.max_value = agent.max_mana
+	agent_mana_bar.value = agent.max_mana
+	
 	agent.health_changed.connect(func(hp): agent_hp_bar.value = hp)
+	agent.mana_changed.connect(func(mana): agent_mana_bar.value = mana)
 	agent.opponent = player;
 
 	voice_manager.voice_command_received.connect(_handle_voice_cast)
 
 func _process(_delta):
 	# Keyboard Fallbacks
-	if Input.is_action_just_pressed("cast_water"): player.cast_spell(Globals.Element.WATER, get_global_mouse_position())
-	elif Input.is_action_just_pressed("cast_fire"): player.cast_spell(Globals.Element.FIRE, get_global_mouse_position())
-	elif Input.is_action_just_pressed("cast_nature"): player.cast_spell(Globals.Element.NATURE, get_global_mouse_position())
-	elif Input.is_action_just_pressed("cast_light"): player.cast_spell(Globals.Element.LIGHT, get_global_mouse_position())
+	if Input.is_action_just_pressed("cast_water"): player.cast_spell(
+		Globals.SpellDescriptor.new(
+			Globals.Element.WATER, 
+			Globals.ProjectileSpeed.NORMAL, 
+			Globals.ProjectileMode.PROJECTILE), 
+		get_global_mouse_position())
+	elif Input.is_action_just_pressed("cast_fire"): player.cast_spell(
+		Globals.SpellDescriptor.new(
+			Globals.Element.FIRE, 
+			Globals.ProjectileSpeed.NORMAL, 
+			Globals.ProjectileMode.PROJECTILE), 
+		get_global_mouse_position())
+	elif Input.is_action_just_pressed("cast_nature"): player.cast_spell(
+		Globals.SpellDescriptor.new(
+			Globals.Element.NATURE, 
+			Globals.ProjectileSpeed.NORMAL, 
+			Globals.ProjectileMode.PROJECTILE), 
+		get_global_mouse_position())
+	elif Input.is_action_just_pressed("cast_light"): player.cast_spell(
+		Globals.SpellDescriptor.new(
+			Globals.Element.LIGHT, 
+			Globals.ProjectileSpeed.NORMAL, 
+			Globals.ProjectileMode.PROJECTILE), 
+		get_global_mouse_position())
 
 func _handle_voice_cast(effect_name: String):
 	var target = get_global_mouse_position()
