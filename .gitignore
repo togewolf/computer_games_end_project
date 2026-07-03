@@ -10,3 +10,7 @@
 # OS files
 .DS_Store
 Thumbs.db
+
+# Python
+.idea/
+.__pycache__/

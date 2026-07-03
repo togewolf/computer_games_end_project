@@ -1,0 +1,10 @@
+numpy>=1.23.0
+tensorflow>=2.13.0  # Note: 2.13+ is highly recommended for proper .keras format support
+pyaudio>=0.2.13
+
+scikit-learn>=1.2.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Compiling the Godot Export executable (later)
+pyinstaller>=6.0.0

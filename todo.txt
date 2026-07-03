@@ -6,7 +6,7 @@ Todo:
 		- UI elements
 		
 		
-	- connect keyword detection model (Thomas)
+	- better keyword detection (currently, it sucks) (Thomas)
 	
 	
 	- more sophisticated agent (Robin)

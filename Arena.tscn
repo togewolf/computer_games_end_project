@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dhvs7pp2lkc80" path="res://Wizard.tscn" id="2_vbyki"]
 [ext_resource type="Script" uid="uid://cowp8cjhf6el" path="res://player.gd" id="3_uj4qe"]
 [ext_resource type="Script" uid="uid://k3xqv7pcbf63" path="res://agent.gd" id="3_vbyki"]
+[ext_resource type="Script" uid="uid://cd41dt20v50u4" path="res://voice_manager.gd" id="5_jycnn"]
 
 [node name="Arena" type="Node2D" unique_id=2107833212]
 script = ExtResource("1_u45fm")
@@ -64,3 +65,6 @@ offset_bottom = 23.0
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -30)
 text = "Randomness"
+
+[node name="VoiceManager" type="Node" parent="." unique_id=1774400863]
+script = ExtResource("5_jycnn")
