@@ -6,7 +6,21 @@
 [ext_resource type="Script" uid="uid://k3xqv7pcbf63" path="res://agent.gd" id="3_vbyki"]
 [ext_resource type="Script" uid="uid://cd41dt20v50u4" path="res://voice_manager.gd" id="5_jycnn"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fsirm"]
+size = Vector2(4195.002, 2795)
+
+[sub_resource type="SystemFont" id="SystemFont_53x0w"]
+font_weight = 100
+subpixel_positioning = 0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ml6qp"]
+bg_color = Color(0.1764706, 0.6156863, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jycnn"]
+bg_color = Color(0.1759991, 0.61577624, 0.99999994, 1)
+
 [node name="Arena" type="Node2D" unique_id=2107833212]
+position = Vector2(14, 33)
 script = ExtResource("1_u45fm")
 
 [node name="WizardPlayer" parent="." unique_id=586138894 instance=ExtResource("2_vbyki")]
@@ -19,17 +33,46 @@ position = Vector2(233, 72.00006)
 scale = Vector2(0.2, 0.2)
 script = ExtResource("3_vbyki")
 
+[node name="PerceptionArea" type="Area2D" parent="WizardAgent" unique_id=323163152]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WizardAgent/PerceptionArea" unique_id=1022530263]
+position = Vector2(-7.500244, 1387.4998)
+scale = Vector2(0.9999994, 0.9999994)
+shape = SubResource("RectangleShape2D_fsirm")
+
 [node name="AgentHP" type="ProgressBar" parent="." unique_id=985113576]
 offset_left = 57.0
 offset_top = 29.0
 offset_right = 174.0
 offset_bottom = 56.0
 
+[node name="AgentMana" type="ProgressBar" parent="." unique_id=950199051]
+custom_minimum_size = Vector2(0, 16)
+offset_left = 57.0
+offset_top = 58.0
+offset_right = 174.0
+offset_bottom = 74.0
+theme_override_fonts/font = SubResource("SystemFont_53x0w")
+theme_override_font_sizes/font_size = 5
+theme_override_styles/fill = SubResource("StyleBoxFlat_ml6qp")
+
 [node name="PlayerHP" type="ProgressBar" parent="." unique_id=1769762228]
-offset_left = 77.0
-offset_top = 615.0
-offset_right = 173.0
+offset_left = 67.0
+offset_top = 612.0
+offset_right = 184.0
 offset_bottom = 642.0
+
+[node name="PlayerMana" type="ProgressBar" parent="." unique_id=160260720]
+custom_minimum_size = Vector2(0, 16)
+offset_left = 67.0
+offset_top = 644.0
+offset_right = 184.0
+offset_bottom = 660.0
+theme_override_colors/font_color = Color(0.4759903, 0.7604572, 0.9964766, 1)
+theme_override_fonts/font = SubResource("SystemFont_53x0w")
+theme_override_font_sizes/font_size = 5
+theme_override_styles/fill = SubResource("StyleBoxFlat_jycnn")
+value = 100.0
 
 [node name="SpeedSlider" type="HSlider" parent="." unique_id=1202257815]
 offset_left = 371.0
