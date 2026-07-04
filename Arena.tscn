@@ -20,7 +20,6 @@ bg_color = Color(0.1764706, 0.6156863, 1, 1)
 bg_color = Color(0.1759991, 0.61577624, 0.99999994, 1)
 
 [node name="Arena" type="Node2D" unique_id=2107833212]
-position = Vector2(14, 33)
 script = ExtResource("1_u45fm")
 
 [node name="WizardPlayer" parent="." unique_id=586138894 instance=ExtResource("2_vbyki")]

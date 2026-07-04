@@ -11,7 +11,7 @@ enum THREAT_RESPONSE { EVADE, PARRY, ACCEPT_DAMAGE }
 
 # Determines how precise our wizard can aim to its target location.
 var jitter_radius = 32.0
-var wizard_width;
+var wizard_width
 var arena_width   = 480.0
 
 @onready var shape = $"./CollisionShape2D"
@@ -43,7 +43,8 @@ class HandledThreat extends RefCounted:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
-	wizard_width = shape.shape.radius * 2.0
+	wizard_width = shape.shape.radius * 2.0 * scale.x
+	print( "Wizard width: ", wizard_width )
 	
 	# Setup Agent AI Timer
 	add_child(agent_timer)
