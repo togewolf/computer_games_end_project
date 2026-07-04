@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" path="res://assets/projectile_fire.png" id="9_icfir"]
 [ext_resource type="Texture2D" path="res://assets/projectile_nature.png" id="10_icnat"]
 [ext_resource type="Texture2D" path="res://assets/projectile_light.png" id="11_iclig"]
+[ext_resource type="Script" path="res://game_over.gd" id="12_gover"]
+[ext_resource type="Script" path="res://pause_menu.gd" id="13_pause"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpbg"]
 bg_color = Color(0.09, 0.1, 0.18, 0.85)
@@ -40,6 +42,42 @@ corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
 bg_color = Color(0.09, 0.1, 0.18, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.44, 0.52, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.16, 0.18, 0.32, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.44, 0.52, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnhover"]
+bg_color = Color(0.24, 0.27, 0.45, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.66, 0.75, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnpressed"]
+bg_color = Color(0.07, 0.08, 0.15, 0.95)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -245,42 +283,4 @@ expand_mode = 1
 stretch_mode = 5
 texture_filter = 1
 
-[node name="Key" type="Label" parent="SpellSlot3" unique_id=1912450349]
-offset_left = 3.0
-offset_top = -22.0
-offset_right = 20.0
-offset_bottom = -2.0
-text = "3"
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
-theme_override_constants/outline_size = 4
-
-[node name="SpellSlot4" type="Panel" parent="." unique_id=1912450350]
-offset_left = 432.0
-offset_top = 648.0
-offset_right = 472.0
-offset_bottom = 688.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
-
-[node name="Icon" type="TextureRect" parent="SpellSlot4" unique_id=1912450351]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 36.0
-offset_bottom = 36.0
-texture = ExtResource("11_iclig")
-expand_mode = 1
-stretch_mode = 5
-texture_filter = 1
-
-[node name="Key" type="Label" parent="SpellSlot4" unique_id=1912450352]
-offset_left = 3.0
-offset_top = -22.0
-offset_right = 20.0
-offset_bottom = -2.0
-text = "4"
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
-theme_override_constants/outline_size = 4
-
-[node name="VoiceManager" type="Node" parent="." unique_id=1774400863]
-script = ExtResource("5_jycnn")
+[node name="Key" type="
