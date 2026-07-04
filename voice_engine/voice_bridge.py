@@ -1,4 +1,3 @@
-# voice_bridge.py
 import os
 import sys
 import socket
@@ -13,30 +12,27 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 from parameters import CONTINUOUS_PARAMS, SAMPLE_RATE, SEQUENCE_LENGTH, DEFAULT_PARAMS
 from spectrogram_utils import generate_mel_spectrogram
 
-# --- CONFIGURATION ---
 UDP_IP = "127.0.0.1"
 UDP_PORT = 4242
 MODEL_PATH = "model_nine_runes_framewise.keras"
 
 # Exactly 11 classes (9 runes + 2 system classes).
-# Use this exact list in your training.py SUBSETS dictionary!
-CLASS_NAMES = [
-    "unknown", "noise",
-    "kiri", "mego", "runa", "agla",
-    "bumbo", "zollzag", "makto", "tibu", "venstra"
-]
+CLASS_NAMES = ["unknown", "noise",
+                     "igi", "vova", "rube", "pikat",
+                    "zollzag", "bumbo", "noxo", "trodu", "pringo"]
 
 KEYWORD_TO_EFFECT = {
-    "kiri": "fire",
-    "mego": "water",
-    "runa": "nature",
-    "agla": "light",
-    "bumbo": "placeholder_1",
-    "zollzag": "placeholder_2",
-    "makto": "placeholder_3",
-    "tibu": "placeholder_4",
-    "venstra": "placeholder_5"
+    "igi": "fire",
+    "vova": "water",
+    "rube": "nature",
+    "pikat": "light",
+    "zollzag": "target",
+    "bumbo": "projectile",
+    "noxo": "slow",
+    "trodu": "fast",
+    "pringo": "fastest"
 }
+
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -69,10 +65,7 @@ def start_bridge():
 
     ignore_indices = [0, 1]  # indices for "unknown" and "noise"
 
-    print("\n==============================================")
-    print(f"⚡ VOICE BRIDGE ACTIVE on UDP {UDP_PORT} ⚡")
-    print(f"Threshold: {THRESHOLD * 100}% | Smoothing Window: {SMOOTHING_FRAMES} frames")
-    print("==============================================\n")
+    print(f"VOICE BRIDGE ACTIVE on UDP {UDP_PORT}")
 
     try:
         while True:
@@ -105,7 +98,7 @@ def start_bridge():
             best_rune_confidence = rune_probs[best_rune_idx]
             predicted_rune = CLASS_NAMES[best_rune_idx]
 
-            # --- LIVE TELEMETRY UI ---
+            # LIVE TELEMETRY UI
             top_3_indices = np.argsort(rune_probs)[-3:][::-1]
             debug_str = " | ".join([
                 f"{CLASS_NAMES[idx].upper():>8}: {rune_probs[idx] * 100:>5.1f}%"
@@ -114,7 +107,7 @@ def start_bridge():
             sys.stdout.write(f"\r👁️  MIC: {debug_str}   ")
             sys.stdout.flush()
 
-            # --- CASTING LOGIC ---
+            # CASTING LOGIC
             if best_rune_confidence > THRESHOLD and rune_cooldowns[predicted_rune] <= 0:
                 rune_cooldowns[predicted_rune] = COOLDOWN_TIME
 
@@ -122,7 +115,7 @@ def start_bridge():
                     effect = KEYWORD_TO_EFFECT[predicted_rune]
 
                     sys.stdout.write(
-                        f"\n🔥 >> CASTING << [ {predicted_rune.upper()} ] -> {effect} (Conf: {best_rune_confidence * 100:.1f}%)\n")
+                        f"\nRune detected: [ {predicted_rune.upper()} ] -> {effect} (Conf: {best_rune_confidence * 100:.1f}%)\n")
                     sys.stdout.flush()
 
                     # SEND TO GODOT
