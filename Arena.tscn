@@ -5,6 +5,50 @@
 [ext_resource type="Script" uid="uid://cowp8cjhf6el" path="res://player.gd" id="3_uj4qe"]
 [ext_resource type="Script" uid="uid://k3xqv7pcbf63" path="res://agent.gd" id="3_vbyki"]
 [ext_resource type="Script" uid="uid://cd41dt20v50u4" path="res://voice_manager.gd" id="5_jycnn"]
+[ext_resource type="Texture2D" path="res://assets/arena_background.png" id="6_bgart"]
+[ext_resource type="Texture2D" path="res://assets/wizard_agent.png" id="7_agart"]
+[ext_resource type="Texture2D" path="res://assets/projectile_water.png" id="8_icwat"]
+[ext_resource type="Texture2D" path="res://assets/projectile_fire.png" id="9_icfir"]
+[ext_resource type="Texture2D" path="res://assets/projectile_nature.png" id="10_icnat"]
+[ext_resource type="Texture2D" path="res://assets/projectile_light.png" id="11_iclig"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpbg"]
+bg_color = Color(0.09, 0.1, 0.18, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.44, 0.52, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpplayer"]
+bg_color = Color(0.3, 0.69, 0.31, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpagent"]
+bg_color = Color(0.9, 0.22, 0.21, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
+bg_color = Color(0.09, 0.1, 0.18, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.44, 0.52, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fsirm"]
 size = Vector2(4195.002, 2795)
@@ -22,6 +66,11 @@ bg_color = Color(0.1759991, 0.61577624, 0.99999994, 1)
 [node name="Arena" type="Node2D" unique_id=2107833212]
 script = ExtResource("1_u45fm")
 
+[node name="Background" type="Sprite2D" parent="." unique_id=1355729901]
+position = Vector2(240, 360)
+texture = ExtResource("6_bgart")
+texture_filter = 1
+
 [node name="WizardPlayer" parent="." unique_id=586138894 instance=ExtResource("2_vbyki")]
 position = Vector2(237, 625)
 scale = Vector2(0.2, 0.2)
@@ -31,6 +80,9 @@ script = ExtResource("3_uj4qe")
 position = Vector2(233, 72.00006)
 scale = Vector2(0.2, 0.2)
 script = ExtResource("3_vbyki")
+
+[node name="Sprite2D" parent="WizardAgent" index="0" unique_id=1010906370]
+texture = ExtResource("7_agart")
 
 [node name="PerceptionArea" type="Area2D" parent="WizardAgent" unique_id=323163152]
 
@@ -44,6 +96,9 @@ offset_left = 57.0
 offset_top = 29.0
 offset_right = 174.0
 offset_bottom = 56.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_hpbg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hpagent")
 
 [node name="AgentMana" type="ProgressBar" parent="." unique_id=950199051]
 custom_minimum_size = Vector2(0, 16)
@@ -53,6 +108,7 @@ offset_right = 174.0
 offset_bottom = 74.0
 theme_override_fonts/font = SubResource("SystemFont_53x0w")
 theme_override_font_sizes/font_size = 5
+theme_override_styles/background = SubResource("StyleBoxFlat_hpbg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ml6qp")
 
 [node name="PlayerHP" type="ProgressBar" parent="." unique_id=1769762228]
@@ -60,6 +116,9 @@ offset_left = 67.0
 offset_top = 612.0
 offset_right = 184.0
 offset_bottom = 642.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_hpbg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hpplayer")
 
 [node name="PlayerMana" type="ProgressBar" parent="." unique_id=160260720]
 custom_minimum_size = Vector2(0, 16)
@@ -70,6 +129,7 @@ offset_bottom = 660.0
 theme_override_colors/font_color = Color(0.4759903, 0.7604572, 0.9964766, 1)
 theme_override_fonts/font = SubResource("SystemFont_53x0w")
 theme_override_font_sizes/font_size = 5
+theme_override_styles/background = SubResource("StyleBoxFlat_hpbg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_jycnn")
 value = 100.0
 
@@ -90,6 +150,9 @@ offset_bottom = 23.0
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -30)
 text = "SpeedSlider"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 4
 
 [node name="RandomnessSlider" type="HSlider" parent="." unique_id=626330310]
 offset_left = 371.0
@@ -107,6 +170,117 @@ offset_bottom = 23.0
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -30)
 text = "Randomness"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 4
+
+[node name="SpellSlot1" type="Panel" parent="." unique_id=1912450341]
+offset_left = 300.0
+offset_top = 648.0
+offset_right = 340.0
+offset_bottom = 688.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Icon" type="TextureRect" parent="SpellSlot1" unique_id=1912450342]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 36.0
+offset_bottom = 36.0
+texture = ExtResource("8_icwat")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+
+[node name="Key" type="Label" parent="SpellSlot1" unique_id=1912450343]
+offset_left = 3.0
+offset_top = -22.0
+offset_right = 20.0
+offset_bottom = -2.0
+text = "1"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 4
+
+[node name="SpellSlot2" type="Panel" parent="." unique_id=1912450344]
+offset_left = 344.0
+offset_top = 648.0
+offset_right = 384.0
+offset_bottom = 688.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Icon" type="TextureRect" parent="SpellSlot2" unique_id=1912450345]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 36.0
+offset_bottom = 36.0
+texture = ExtResource("9_icfir")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+
+[node name="Key" type="Label" parent="SpellSlot2" unique_id=1912450346]
+offset_left = 3.0
+offset_top = -22.0
+offset_right = 20.0
+offset_bottom = -2.0
+text = "2"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 4
+
+[node name="SpellSlot3" type="Panel" parent="." unique_id=1912450347]
+offset_left = 388.0
+offset_top = 648.0
+offset_right = 428.0
+offset_bottom = 688.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Icon" type="TextureRect" parent="SpellSlot3" unique_id=1912450348]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 36.0
+offset_bottom = 36.0
+texture = ExtResource("10_icnat")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+
+[node name="Key" type="Label" parent="SpellSlot3" unique_id=1912450349]
+offset_left = 3.0
+offset_top = -22.0
+offset_right = 20.0
+offset_bottom = -2.0
+text = "3"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 4
+
+[node name="SpellSlot4" type="Panel" parent="." unique_id=1912450350]
+offset_left = 432.0
+offset_top = 648.0
+offset_right = 472.0
+offset_bottom = 688.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Icon" type="TextureRect" parent="SpellSlot4" unique_id=1912450351]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 36.0
+offset_bottom = 36.0
+texture = ExtResource("11_iclig")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+
+[node name="Key" type="Label" parent="SpellSlot4" unique_id=1912450352]
+offset_left = 3.0
+offset_top = -22.0
+offset_right = 20.0
+offset_bottom = -2.0
+text = "4"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 4
 
 [node name="VoiceManager" type="Node" parent="." unique_id=1774400863]
 script = ExtResource("5_jycnn")

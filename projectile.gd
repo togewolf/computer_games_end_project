@@ -7,13 +7,12 @@ var is_player_owned: bool = false
 var direction: Vector2 = Vector2.UP
 
 func _ready():
-	# tint the sprite based on element.
-	# Or todo swap textures or instantiate completely different scenes here.
+	# swap the sprite texture based on element (was: tint via modulate)
 	match element:
-		Globals.Element.WATER: modulate = Color(0.2, 0.5, 1.0)
-		Globals.Element.FIRE: modulate = Color(1.0, 0.3, 0.2)
-		Globals.Element.NATURE: modulate = Color(0.2, 0.8, 0.2)
-		Globals.Element.LIGHT: modulate = Color(1.0, 1.0, 0.8)
+		Globals.Element.WATER: $Sprite2D.texture = preload("res://assets/projectile_water.png")
+		Globals.Element.FIRE: $Sprite2D.texture = preload("res://assets/projectile_fire.png")
+		Globals.Element.NATURE: $Sprite2D.texture = preload("res://assets/projectile_nature.png")
+		Globals.Element.LIGHT: $Sprite2D.texture = preload("res://assets/projectile_light.png")
 
 	area_entered.connect(_on_area_entered)
 

@@ -10,6 +10,7 @@ radius = 213.28384
 script = ExtResource("1_65sly")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1010906370]
+texture_filter = 1
 texture = ExtResource("1_t5sql")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1694170041]
