@@ -61,6 +61,9 @@ class HandledThreat extends RefCounted:
 func _ready() -> void:
 	super()
 
+	# Use the red enemy wizard sprite (set in code so scene re-saves can't drop it again)
+	$Sprite2D.texture = preload("res://assets/wizard_agent.png")
+
 	wizard_width = shape.shape.radius * 2.0 * scale.x
 	self.is_player = false
 
