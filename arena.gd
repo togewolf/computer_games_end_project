@@ -68,18 +68,38 @@ func _handle_voice_cast(effect_name: String):
 	
 	match effect_name:
 		"fire": 
-			player.cast_spell(Globals.Element.FIRE, target)
+			player.cast_spell(
+			Globals.SpellDescriptor.new(
+			Globals.Element.FIRE, 
+			Globals.ProjectileSpeed.NORMAL, 
+			Globals.ProjectileMode.PROJECTILE), 
+			get_global_mouse_position())
 		"water": 
-			player.cast_spell(Globals.Element.WATER, target)
+			player.cast_spell(
+			Globals.SpellDescriptor.new(
+			Globals.Element.WATER, 
+			Globals.ProjectileSpeed.NORMAL, 
+			Globals.ProjectileMode.PROJECTILE), 
+			get_global_mouse_position())
 		"nature": 
-			player.cast_spell(Globals.Element.NATURE, target)
+			player.cast_spell(
+			Globals.SpellDescriptor.new(
+			Globals.Element.NATURE, 
+			Globals.ProjectileSpeed.NORMAL, 
+			Globals.ProjectileMode.PROJECTILE), 
+			get_global_mouse_position())
 		"light": 
-			player.cast_spell(Globals.Element.LIGHT, target)
-		"placeholder_1": print("Placeholder 1 triggered!")
-		"placeholder_2": print("Placeholder 2 triggered!")
-		"placeholder_3": print("Placeholder 3 triggered!")
-		"placeholder_4": print("Placeholder 4 triggered!")
-		"placeholder_5": print("Placeholder 5 triggered!")
+			player.cast_spell(
+			Globals.SpellDescriptor.new(
+			Globals.Element.LIGHT, 
+			Globals.ProjectileSpeed.NORMAL, 
+			Globals.ProjectileMode.PROJECTILE), 
+			get_global_mouse_position())
+		"projectile": print("projectile mode triggered!")
+		"target": print("target mode triggered!")
+		"noxo": print("slow triggered!")
+		"trodu": print("fast triggered!")
+		"pringo": print("fasteset triggered!")
 		_: print("Unknown effect received: ", effect_name)
 
 func _check_player_defeat(hp):
