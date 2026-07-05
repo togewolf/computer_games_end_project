@@ -23,7 +23,7 @@ var attack_preference = 0.3 # 0 means the wizard prefers speed over targeted mis
 # Parrying and movement is only considering spells that will reach the wizard in the next X seconds
 
 # DEBUGGING
-var DEBUG_AI = true
+var DEBUG_AI = false
 
 var debug_danger_zones: Array = []
 var debug_safe_target: float = INF
@@ -73,6 +73,8 @@ func _ready() -> void:
 	speed_slider.value_changed.connect(func(val): agent_timer.wait_time = val)
 
 func _draw():
+	if !DEBUG_AI: return
+	
 	draw_circle(Vector2.ZERO, wizard_width / 2, Color.AQUA, false, 8)
 
 	# Draw slightly below the wizard's feet so it doesn't overlap the sprite
@@ -530,9 +532,9 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 	# If there was no sector we can even get to to get less damage, we simply parry
 	if shortest_distance_to_best == INF:
 		debug_safe_target = INF
-		local_threats.sort_custom(func(a,b): return a.personal_eta < b.personal_eta)
+		local_threats.sort_custom(func(a,b): return a.distance < b.distance)
 				
-		return {"action": "parry", "parry_target": threats[0]}
+		return {"action": "parry", "parry_target": local_threats[0]}
 
 	# If a strictly better/safer spot exists we can get to we run?
 	if lowest_bullet_count < local_threats_count:
@@ -543,7 +545,8 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 
 	# Else, stand ground and parry the most immediate threat.
 	debug_safe_target = INF
-	return {"action": "parry", "parry_target": threats[0]}
+	local_threats.sort_custom(func(a,b): return a.distance < b.distance)
+	return {"action": "parry", "parry_target": local_threats[0]}
 
 #endregion
 
@@ -608,8 +611,7 @@ func advanced_ai(delta : float):
 				var priority_threat = existing_threats[0]
 				# Save our mana first for a defense!
 				attack = false
-				var threat_distance = priority_threat.projectile.position.distance_to(global_position)
-				if (priority_threat.eta > 0 && threat_distance < 3 * wizard_width ): # It did not cross the y axis yet but it is getting very close!
+				if (priority_threat.eta > 0 && priority_threat.distance < 3 * wizard_width ): # It did not cross the y axis yet but it is getting very close!
 					intent = decide_on_parry_spell(priority_threat)
 					handled_threats.push_back(HandledThreat.new(priority_threat.projectile, THREAT_RESPONSE.PARRY, 1, INF))
 		"parry":
@@ -617,12 +619,9 @@ func advanced_ai(delta : float):
 			evasion_target_x = INF
 			var priority_threat = decision["parry_target"]
 			attack = false
-			var threat_distance = priority_threat.projectile.position.distance_to(global_position)
-			print("Our target has ", priority_threat.eta, " and ", priority_threat.personal_eta)
-			if (priority_threat.eta > 0 && threat_distance < 3 * wizard_width): # It did not cross the y axis yet but it is getting very close!
+			if (priority_threat.eta > 0 && priority_threat.distance < 3 * wizard_width): # It did not cross the y axis yet but it is getting very close!
 					intent = decide_on_parry_spell(priority_threat)
 					handled_threats.push_back(HandledThreat.new(priority_threat.projectile, THREAT_RESPONSE.PARRY, 1, INF))
-			
 		"idle":
 			# We are safe for now,
 			evasion_target_x = arena_width / 2 # We try to go back to the centre, to avoid being cornered
