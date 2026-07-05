@@ -194,6 +194,19 @@ theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
 theme_override_constants/outline_size = 4
 text = "1"
 
+[node name="Word" type="Label" parent="SpellSlot1" unique_id=1912450361]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 42.0
+offset_right = 42.0
+offset_bottom = 58.0
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.65, 0.85, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "vova"
+
 [node name="SpellSlot2" type="Panel" parent="." unique_id=1912450344]
 offset_left = 344.0
 offset_top = 648.0
@@ -222,6 +235,19 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
 theme_override_constants/outline_size = 4
 text = "2"
+
+[node name="Word" type="Label" parent="SpellSlot2" unique_id=1912450362]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 42.0
+offset_right = 42.0
+offset_bottom = 58.0
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.75, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "igi"
 
 [node name="SpellSlot3" type="Panel" parent="." unique_id=1912450347]
 offset_left = 388.0
@@ -252,6 +278,19 @@ theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
 theme_override_constants/outline_size = 4
 text = "3"
 
+[node name="Word" type="Label" parent="SpellSlot3" unique_id=1912450363]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 42.0
+offset_right = 42.0
+offset_bottom = 58.0
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "rube"
+
 [node name="SpellSlot4" type="Panel" parent="." unique_id=1912450350]
 offset_left = 432.0
 offset_top = 648.0
@@ -280,6 +319,31 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
 theme_override_constants/outline_size = 4
 text = "4"
+
+[node name="Word" type="Label" parent="SpellSlot4" unique_id=1912450364]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 42.0
+offset_right = 42.0
+offset_bottom = 58.0
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "pikat"
+
+[node name="CastHints" type="Label" parent="." unique_id=1912450365]
+offset_left = 8.0
+offset_top = 668.0
+offset_right = 292.0
+offset_bottom = 714.0
+theme_override_colors/font_color = Color(0.78, 0.8, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "Speed:  6 noxo   7 trodu   8 pringo
+Mode:  9 bumbo (straight)   0 zollzag (homing)"
 
 [node name="VoiceManager" type="Node" parent="." unique_id=1774400863]
 script = ExtResource("5_jycnn")
