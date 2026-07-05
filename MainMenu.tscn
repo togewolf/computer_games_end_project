@@ -137,4 +137,4 @@ theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 13
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="QuitButton" to=
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_pressed"]

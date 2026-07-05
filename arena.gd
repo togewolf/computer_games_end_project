@@ -78,3 +78,14 @@ func _handle_voice_cast(effect_name: String):
 		"placeholder_1": print("Placeholder 1 triggered!")
 		"placeholder_2": print("Placeholder 2 triggered!")
 		"placeholder_3": print("Placeholder 3 triggered!")
+		"placeholder_4": print("Placeholder 4 triggered!")
+		"placeholder_5": print("Placeholder 5 triggered!")
+		_: print("Unknown effect received: ", effect_name)
+
+func _check_player_defeat(hp):
+	if hp <= 0:
+		$GameOverLayer.show_result(false)
+
+func _check_agent_defeat(hp):
+	if hp <= 0:
+		$GameOverLayer.show_result(true)
