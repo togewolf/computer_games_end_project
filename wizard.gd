@@ -35,6 +35,8 @@ func cast_spell(spell : Globals.SpellDescriptor, target_location : Vector2):
 	proj.element = spell.element
 	proj.caster = self
 	proj.is_player_owned = is_player
+	proj.speed = Globals.PROJECTILE_SPEED_SPEEDS[spell.speed]
+	proj.mode = spell.mode
 	proj.direction = (target_location - self.global_position).normalized()
 	proj.position = $SpawnPoint.global_position
 	get_tree().current_scene.add_child(proj)

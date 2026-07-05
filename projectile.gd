@@ -6,6 +6,7 @@ var element: Globals.Element
 var is_player_owned: bool = false
 var caster    : Wizard = null
 var dealt_dmg : bool = false
+var mode : Globals.ProjectileMode = Globals.ProjectileMode.PROJECTILE
 var direction: Vector2 = Vector2.UP
 
 func _ready():
@@ -18,8 +19,16 @@ func _ready():
 
 	area_entered.connect(_on_area_entered)
 
+func _draw():
+	if(mode == Globals.ProjectileMode.TARGETED and !is_player_owned):
+		draw_dashed_line(to_local(caster.opponent.global_position), to_local(global_position), Color.from_rgba8(255, 0, 0, 128), 1, 3, false, true)
+
 func _process(delta):
-	position += direction * speed * delta
+	if (mode == Globals.ProjectileMode.TARGETED):
+		direction = (caster.opponent.global_position - global_position).normalized()
+	global_position += direction * speed * delta
+	
+	queue_redraw()
 
 func _on_area_entered(area):
 	if area is Projectile:
