@@ -15,7 +15,11 @@ var wizard_width  = 96.0
 var arena_width   = 480.0
 
 
-var reaction_window = 2.5 # How much the AI predicts spells in advance in seconds.
+var reaction_window = INF # How much the AI predicts spells in advance in seconds.
+var min_aggression_time = 0.75 # Minimum time we wait before trying to attack
+var max_aggression_time = 3 # Maximum time we wait before trying to attack
+var attack_preference = 0.3 # 0 means the wizard prefers speed over targeted missiles
+
 # Parrying and movement is only considering spells that will reach the wizard in the next X seconds
 
 # DEBUGGING
@@ -29,6 +33,7 @@ var debug_considerations : Array[Vector2] = []
 @onready var shape = $"./CollisionShape2D"
 
 var evasion_target_x : float = INF;
+var next_attack_timer : float = randf_range(min_aggression_time, max_aggression_time)
 
 class IncomingThreatData extends RefCounted:
 	var projectile: Projectile
@@ -109,7 +114,7 @@ func _draw():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 
-	advanced_ai()
+	advanced_ai(delta)
 	queue_redraw()
 
 	if evasion_target_x != INF:
@@ -154,17 +159,36 @@ func get_detailed_threat_list() -> Array[IncomingThreatData]:
 			var proj_direction = proj.direction
 
 			# 2. Calculate actual distance
-			var distance = global_position.distance_to(node.global_position)
+			var distance = global_position.distance_to(proj.global_position)
 
 			# 3. Calculate ETA (Time until arrival)
 			var velocity = proj_direction * proj_speed
-			var relative_direction = (global_position - node.global_position).normalized()
+			var relative_direction = (global_position - proj.global_position).normalized()
 			var closing_speed = velocity.dot(relative_direction)
 
-			var personal_eta = INF # Default to infinity if it's flying away
-			if closing_speed > 0:
-				personal_eta = distance / closing_speed
+			var projectile_radius = 24
+			var total_radius = wizard_width / 2 + projectile_radius
+			var diff = proj.global_position - global_position
+			
+			var a = velocity.dot(velocity)
+			var b = 2.0 * diff.dot(velocity)
+			var c = diff.dot(diff) - (total_radius * total_radius)
 
+			var discr = (b * b) - (4.0 * a * c)
+			var personal_eta = INF
+			
+			if discr >= 0:
+				var sqrt_disc = sqrt(discr)
+				
+				# Calculate entry time (t1) and exit time (t2)
+				var t1 = (-b - sqrt_disc) / (2.0 * a)
+				var t2 = (-b + sqrt_disc) / (2.0 * a)
+			
+				if t1 >= 0:
+					personal_eta = t1 # Time until it hits our outer edge
+				elif t2 >= 0:
+					personal_eta = t2 # The projectile is ALREADY inside our radius
+		
 			var p = proj.global_position
 			var d = proj.direction
 			var _y= global_position.y
@@ -209,7 +233,6 @@ func decide_on_parry_spell(threat : IncomingThreatData) -> Globals.SpellIntent:
 		var spell_mode    = Globals.ProjectileMode.PROJECTILE
 
 		var spell = Globals.SpellDescriptor.new(spell_element, spell_speed, spell_mode);
-		# TODO: Calculate the mana to HP cost ratio and whether we can even parry it
 		var mana_cost     = Globals.get_spell_cost(spell)
 		if (mana_cost > current_mana):
 			# We simply cannot cast it
@@ -222,7 +245,6 @@ func clear_past_threats():
 		var threat = handled_threats[i]
 
 		if not is_instance_valid(threat.projectile):
-			print("invalid ")
 			handled_threats.remove_at(i)
 			continue
 
@@ -231,11 +253,9 @@ func clear_past_threats():
 		var proj_y = threat.projectile.global_position.y
 
 		if is_moving_up and proj_y > global_position.y:
-			print("decide 1")
 			handled_threats.remove_at(i)
 		# Not needed rn, but maybe later we wanna swap positions
 		elif not is_moving_up and proj_y < global_position.y:
-			print("decide 2")
 			handled_threats.remove_at(i)
 
 func get_threats_response():
@@ -388,7 +408,8 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 	var reaction_window = INF # Only care about spells hitting in the next 1.5s
 	var wizard_radius = wizard_width / 2  # Replace with get_physical_width() / 2.0
 	var min_x = wizard_radius
-	var max_x = get_viewport_rect().size.x - wizard_radius
+	var max_x = arena_width - wizard_radius
+	var padding = 4
 
 	var impact_points = []
 
@@ -404,20 +425,31 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 			continue
 			
 		var impact_x = threat.projectile.global_position.x + (t * threat.projectile.direction.x)
-
-
+		
 		impact_points.append(impact_x)
+		
+		var low_y  = global_position.y - wizard_radius
+		var high_y = global_position.y - wizard_radius
+
+		var t0 = (low_y  - threat.projectile.global_position.y) / threat.projectile.direction.y
+		var t1 = (high_y - threat.projectile.global_position.y) / threat.projectile.direction.y
+
+		var i0 = threat.projectile.global_position.x + (t0 * threat.projectile.direction.x)
+		var i1 = threat.projectile.global_position.x + (t1 * threat.projectile.direction.x)
+		
+		var left_impact  = min(i0,i1, impact_x)
+		var right_impact = max(i0,i1, impact_x)
 
 		# Get projectile radius safely
 		var shape = threat.projectile.get_node_or_null("CollisionShape2D")
 		var proj_radius = shape.shape.radius if shape and shape.shape is CircleShape2D else 16.0
 
-		var clearance = proj_radius + wizard_radius
+		var clearance = proj_radius + wizard_radius + padding
 
 		# We basically create danger zones - intervals on the x axis, that are bound by [Left Bound, Right Bound]
 		# And tell where the AI where to not go in order to not be hit by any projectiles
-		var zone_left = clamp(impact_x - clearance, min_x, max_x)
-		var zone_right = clamp(impact_x + clearance, min_x, max_x)
+		var zone_left = clamp(left_impact - clearance, min_x, max_x)
+		var zone_right = clamp(right_impact + clearance, min_x, max_x)
 		danger_zones.append( DangerZone.new( zone_left, zone_right, threat ) )
 
 	debug_danger_zones = danger_zones
@@ -444,11 +476,11 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 		if global_position.x >= zone.min and global_position.x <= zone.max:
 			current_threats.push_back(zone.threat)
 
-	if (global_position.x == evasion_target_x and current_threats.size() != 0):
-		print("We are at x: ", global_position.x, " and still think we are in threat of ", current_threats.size(), " threats. Primarily in range ", current_threats[0].min, " to ", current_threats[0].max, " by ", current_threats[0].threat)
-
+	var local_threats = current_threats
+	var local_threats_count = local_threats.size()
+	
 	# If we are not being hit, we simply omit the decision tree. We simply stay where we are
-	if current_threats.size() == 0:
+	if local_threats_count == 0:
 		return {"action": "idle"} # We are perfectly safe standing still!
 
 
@@ -461,9 +493,7 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 	var considerations : Array[Vector2] = []
 
 	for i in range(unique_boundaries.size() - 1):
-		var sector_left = unique_boundaries[i]
-		var sector_right = unique_boundaries[i+1]
-		var sector_center = (sector_left + sector_right) / 2.0
+		var sector_center = unique_boundaries[i]
 
 		# Unlike the previous AI version I made, we are actually keeping the intervals here
 		# The idea is that knowing the overlapping intervals still we actually can determine
@@ -483,7 +513,7 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 
 		current_threats.clear()
 		for zone in danger_zones:
-			if sector_center >= zone.min and sector_center <= zone.max:
+			if sector_center > zone.min and sector_center < zone.max:
 				current_threats.push_back(zone.threat)
 				
 		considerations.push_back(Vector2(current_threats.size(), sector_center))
@@ -495,16 +525,20 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 			still_lingering_threats = current_threats
 
 	debug_considerations = considerations
-
-	# If there was no sector we can even get to, we simply parry
+	# Now we sort by personal ETA
+	
+	# If there was no sector we can even get to to get less damage, we simply parry
 	if shortest_distance_to_best == INF:
 		debug_safe_target = INF
+		local_threats.sort_custom(func(a,b): return a.personal_eta < b.personal_eta)
+				
 		return {"action": "parry", "parry_target": threats[0]}
 
 	# If a strictly better/safer spot exists we can get to we run?
-	if lowest_bullet_count < current_threats.size():
+	if lowest_bullet_count < local_threats_count:
 		# We can make it to a safer zone before the first bullet impacts
 		debug_safe_target = best_sector_center
+		still_lingering_threats.sort_custom(func(a,b): return abs(a.eta) < abs(b.eta))
 		return {"action": "dodge", "target_x": best_sector_center, "present_threats": still_lingering_threats}
 
 	# Else, stand ground and parry the most immediate threat.
@@ -521,10 +555,49 @@ func _agent_ai_tick():
 	#if(spell_intent != null):
 	#	agent_spell_cast(spell_intent)
 
-func advanced_ai():
+func decide_on_attack(threats_count):
+	if next_attack_timer > 0: return
+	next_attack_timer = randf_range(min_aggression_time, max_aggression_time)
+	
+	var free_balance = current_mana - threats_count * Globals.BASE_MULTIPLIER
+	# Let's see what we can do
+	var target = self.opponent
+	# Choose random element
+	var element : Globals.Element = randi_range(0,3)
+	var desired_speed : Globals.ProjectileSpeed = randi_range(0,2)
+	var desired_mode  : Globals.ProjectileMode = randi_range(0,1)
+	# Degrade our attack until we can afford it
+	
+	var fail_count  = 0
+	var max_fails   = 5
+	
+	var intent = Globals.SpellDescriptor.new(element, desired_speed, desired_mode)
+	
+	while (free_balance < Globals.get_spell_cost(intent) && fail_count < max_fails):
+		var degrade_speed = randf() < attack_preference
+		if degrade_speed:
+			desired_speed = clampi(desired_speed, 0, 2)
+		else:
+			desired_mode  = clampi(desired_mode, 0, 1)
+		
+		fail_count += 1
+		intent = Globals.SpellDescriptor.new(element, desired_speed, desired_mode)
+	
+	
+	# Can we cast this now?
+	if free_balance >= Globals.get_spell_cost(intent):
+		return Globals.SpellIntent.new(intent, target)
+	else:
+		return null
+
+func advanced_ai(delta : float):
+	next_attack_timer -= delta
+	clear_past_threats()
+	
 	var threats  = get_detailed_threat_list()
 	var decision = evaluate_combat_state_adv(threats)
 	var intent   = null
+	var attack   = true # We always have a desire to attack >:)
 
 	match decision["action"]:
 		"dodge":
@@ -532,12 +605,29 @@ func advanced_ai():
 			evasion_target_x = decision["target_x"]
 			var existing_threats = decision["present_threats"]
 			if (existing_threats.size() > 0):
-				# If there is a threat still, we parry the first one in this tick
-				intent = decide_on_parry_spell(existing_threats[0])
+				var priority_threat = existing_threats[0]
+				# Save our mana first for a defense!
+				attack = false
+				var threat_distance = priority_threat.projectile.position.distance_to(global_position)
+				if (priority_threat.eta > 0 && threat_distance < 3 * wizard_width ): # It did not cross the y axis yet but it is getting very close!
+					intent = decide_on_parry_spell(priority_threat)
+					handled_threats.push_back(HandledThreat.new(priority_threat.projectile, THREAT_RESPONSE.PARRY, 1, INF))
 		"parry":
 			# Primary goal is to parry
 			evasion_target_x = INF
-			intent = decide_on_parry_spell(decision["parry_target"])
+			var priority_threat = decision["parry_target"]
+			attack = false
+			var threat_distance = priority_threat.projectile.position.distance_to(global_position)
+			print("Our target has ", priority_threat.eta, " and ", priority_threat.personal_eta)
+			if (priority_threat.eta > 0 && threat_distance < 3 * wizard_width): # It did not cross the y axis yet but it is getting very close!
+					intent = decide_on_parry_spell(priority_threat)
+					handled_threats.push_back(HandledThreat.new(priority_threat.projectile, THREAT_RESPONSE.PARRY, 1, INF))
+			
 		"idle":
 			# We are safe for now,
 			evasion_target_x = arena_width / 2 # We try to go back to the centre, to avoid being cornered
+		
+	if attack:
+		intent = decide_on_attack(threats.size())
+	if (intent != null):
+		agent_spell_cast(intent)
