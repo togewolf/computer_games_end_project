@@ -29,7 +29,6 @@ func _ready():
 	mana_timer.start(1)
 
 func _add_mana():
-	print("added mana")
 	current_mana = clamp( current_mana + mana_regen, 0, max_mana )
 	mana_changed.emit(current_mana)
 
