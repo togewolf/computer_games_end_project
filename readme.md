@@ -5,7 +5,7 @@
 3. Run "python voice_bridge.py". Keyword detection is active now (see output in terminal)
 4. Run the godot game to cast the spells
 5. Speak the keywords:
-	"igi": "fire",
+	"igi": "fire", 
 	"vova": "water",
 	"rube": "nature",
 	"pikat": "light",
