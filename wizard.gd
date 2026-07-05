@@ -33,6 +33,7 @@ func cast_spell(spell : Globals.SpellDescriptor, target_location : Vector2):
 
 	var proj = projectile_scene.instantiate()
 	proj.element = spell.element
+	proj.caster = self
 	proj.is_player_owned = is_player
 	proj.direction = (target_location - self.global_position).normalized()
 	proj.position = $SpawnPoint.global_position

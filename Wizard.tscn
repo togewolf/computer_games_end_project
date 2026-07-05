@@ -4,13 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://ct860b6sedjk3" path="res://assets/wizard.png" id="1_t5sql"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1vivr"]
-radius = 213.28384
+radius = 48.0
 
 [node name="Wizard" type="Area2D" unique_id=586138894]
 script = ExtResource("1_65sly")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1010906370]
 texture_filter = 1
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_t5sql")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1694170041]
