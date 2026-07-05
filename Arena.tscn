@@ -6,10 +6,10 @@
 [ext_resource type="Script" uid="uid://k3xqv7pcbf63" path="res://agent.gd" id="3_vbyki"]
 [ext_resource type="Script" uid="uid://cd41dt20v50u4" path="res://voice_manager.gd" id="5_jycnn"]
 [ext_resource type="Texture2D" uid="uid://c7o84fhli0h4g" path="res://assets/arena_background.png" id="6_bgart"]
-[ext_resource type="Texture2D" uid="uid://dex86xw6jmy62" path="res://assets/projectile_water.png" id="8_icwat"]
+[ext_resource type="Texture2D" uid="uid://crsli1pniw505" path="res://assets/projectile_water.png" id="8_icwat"]
 [ext_resource type="Texture2D" uid="uid://bwl3takt56r6l" path="res://assets/projectile_fire.png" id="9_icfir"]
 [ext_resource type="Texture2D" uid="uid://cktd4d7hskudy" path="res://assets/projectile_nature.png" id="10_icnat"]
-[ext_resource type="Texture2D" uid="uid://du6adg5wr56xe" path="res://assets/projectile_light.png" id="11_iclig"]
+[ext_resource type="Texture2D" uid="uid://bd2ihf1he0x1p" path="res://assets/projectile_light.png" id="11_iclig"]
 [ext_resource type="Script" uid="uid://b2n4g0vsrydki" path="res://game_over.gd" id="12_gover"]
 [ext_resource type="Script" uid="uid://ciouixlg27l44" path="res://pause_menu.gd" id="13_pause"]
 
@@ -164,47 +164,6 @@ theme_override_font_sizes/font_size = 5
 theme_override_styles/background = SubResource("StyleBoxFlat_hpbg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_jycnn")
 value = 100.0
-
-[node name="SpeedSlider" type="HSlider" parent="." unique_id=1202257815]
-offset_left = 371.0
-offset_top = 85.0
-offset_right = 461.0
-offset_bottom = 101.0
-min_value = 0.3
-max_value = 3.0
-step = 0.1
-value = 1.5
-
-[node name="Label" type="Label" parent="SpeedSlider" unique_id=127112415]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-offset_transform_enabled = true
-offset_transform_position = Vector2(0, -30)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
-theme_override_constants/outline_size = 4
-text = "SpeedSlider"
-
-[node name="RandomnessSlider" type="HSlider" parent="." unique_id=626330310]
-offset_left = 371.0
-offset_top = 39.0
-offset_right = 468.0
-offset_bottom = 55.0
-max_value = 1.0
-step = 0.01
-value = 0.2
-
-[node name="Label" type="Label" parent="RandomnessSlider" unique_id=43656480]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-offset_transform_enabled = true
-offset_transform_position = Vector2(0, -30)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
-theme_override_constants/outline_size = 4
-text = "Randomness"
 
 [node name="SpellSlot1" type="Panel" parent="." unique_id=1912450341]
 offset_left = 300.0

@@ -45,7 +45,7 @@ func _process(_delta):
 		
 	if Input.is_action_just_pressed("speed_normal"):
 		current_speed = Globals.ProjectileSpeed.NORMAL
-	elif Input.is_action_just_pressed("speed__faster"):
+	elif Input.is_action_just_pressed("speed_faster"):
 		current_speed = Globals.ProjectileSpeed.FASTER
 	elif Input.is_action_just_pressed("speed_fastest"):
 		current_speed = Globals.ProjectileSpeed.FASTEST

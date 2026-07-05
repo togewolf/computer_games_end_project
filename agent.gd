@@ -1,8 +1,6 @@
 extends Wizard
 
-@onready var agent_timer = Timer.new()
-@onready var speed_slider = $"../SpeedSlider"
-@onready var randomness_slider = $"../RandomnessSlider"
+
 @onready var perception_area = $PerceptionArea
 
 var handled_threats : Array[HandledThreat] = []
@@ -64,14 +62,7 @@ func _ready() -> void:
 	super()
 
 	wizard_width = shape.shape.radius * 2.0 * scale.x
-	print( "Wizard width: ", wizard_width )
-
-	# Setup Agent AI Timer
-	add_child(agent_timer)
 	self.is_player = false
-	agent_timer.timeout.connect(_agent_ai_tick)
-	agent_timer.start(speed_slider.value)
-	speed_slider.value_changed.connect(func(val): agent_timer.wait_time = val)
 
 func _draw():
 	if !DEBUG_AI: return
@@ -260,43 +251,6 @@ func clear_past_threats():
 		# Not needed rn, but maybe later we wanna swap positions
 		elif not is_moving_up and proj_y < global_position.y:
 			handled_threats.remove_at(i)
-
-func get_threats_response():
-	# First, determine if our current threats are still valid? - gotta count from behind, so that if we remove an item we aren't losing shit
-	clear_past_threats()
-
-	# First, lets see what threats we have:
-	var threats = get_detailed_threat_list()
-
-	# We only allow one spell cast per tick here, because otherwise, it gets a lil complicated and he he'd frankly try to spam
-	var spell_intent : Globals.SpellIntent = null
-
-	while(spell_intent == null && threats.size() > 0):
-		var priority_threat = threats.pop_front()
-
-		# Are we currently trying to evade something already?
-		if ( evasion_target_x == INF ):
-			# We do not need to parry it maybe
-			# Best course of action is usually to avoid first
-			var escape_spot : float = INF
-			print("We wanna go to ", escape_spot)
-			if escape_spot != INF:
-				evasion_target_x = escape_spot # We can evade it, let's do that instead
-				handled_threats.push_back(HandledThreat.new(priority_threat.projectile, THREAT_RESPONSE.EVADE, 1, escape_spot))
-			else:
-				spell_intent = decide_on_parry_spell(priority_threat)
-				if (spell_intent != null):
-					handled_threats.push_back(HandledThreat.new(priority_threat.projectile, THREAT_RESPONSE.PARRY, 1, escape_spot))
-				else:
-					handled_threats.push_back(HandledThreat.new(priority_threat.projectile, THREAT_RESPONSE.ACCEPT_DAMAGE, 1, escape_spot))
-		else:
-			spell_intent = decide_on_parry_spell(priority_threat)
-			if (spell_intent != null):
-				handled_threats.push_back(HandledThreat.new(priority_threat.projectile, THREAT_RESPONSE.PARRY, 1, INF))
-			else:
-				handled_threats.push_back(HandledThreat.new(priority_threat.projectile, THREAT_RESPONSE.ACCEPT_DAMAGE, 1, INF))
-
-	return spell_intent
 
 func evaluate_combat_state(threats: Array[IncomingThreatData]) -> Dictionary:
 	var reaction_window = INF # Only care about spells hitting in the next 1.5s
@@ -546,11 +500,9 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 
 	# Else, stand ground and parry the most immediate threat.
 	debug_safe_target = INF
-	local_threats.sort_custom(func(a,b): return a.distance < b.distance)
-1	return {"action": "parry", "parry_target": local_threats[0]}
+	return {"action": "parry", "parry_target": threats[0]}
 
 #endregion
-
 func _agent_ai_tick():
 	return
 	# Defense first! Do we need to repsond to incoming threats?

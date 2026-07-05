@@ -14,6 +14,9 @@ var opponent : Wizard;
 var current_health: int
 var current_shield: int
 var current_mana  : float = max_mana
+var mana_regen    : float = 2.0
+
+var mana_timer = Timer.new()
 
 var projectile_scene = preload("res://Projectile.tscn")
 
@@ -21,6 +24,14 @@ func _ready():
 	current_health = max_health
 	current_shield = 0
 	current_mana   = max_mana
+	add_child(mana_timer)
+	mana_timer.timeout.connect(_add_mana)
+	mana_timer.start(1)
+
+func _add_mana():
+	print("added mana")
+	current_mana = clamp( current_mana + mana_regen, 0, max_mana )
+	mana_changed.emit(current_mana)
 
 func cast_spell(spell : Globals.SpellDescriptor, target_location : Vector2):
 	var cost = Globals.get_spell_cost(spell);

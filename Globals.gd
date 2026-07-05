@@ -72,7 +72,7 @@ const PROJECTILE_SPEED_SPEEDS = {
 	ProjectileSpeed.FASTEST : 200
 }
 
-const BASE_MULTIPLIER = 1.0
+const BASE_MULTIPLIER = 5.0
 
 func get_spell_cost(intent : SpellDescriptor) -> float:
 	return ELEMENT_SPELL_COST[intent.element] * BASE_MULTIPLIER * PROJECTILE_MODE_COSTS[intent.mode] * PROJECTILE_SPEED_COSTS[intent.speed]

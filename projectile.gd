@@ -20,8 +20,13 @@ func _ready():
 	area_entered.connect(_on_area_entered)
 
 func _draw():
-	if(mode == Globals.ProjectileMode.TARGETED and !is_player_owned):
-		draw_dashed_line(to_local(caster.opponent.global_position), to_local(global_position), Color.from_rgba8(255, 0, 0, 128), 1, 3, false, true)
+	if(mode == Globals.ProjectileMode.TARGETED):
+		var color = Color.DEEP_PINK;
+		if is_player_owned: 
+			color = Color.from_rgba8(255, 0, 0, 128)
+		else:
+			color = Color.from_rgba8(0, 255, 0, 128)
+		draw_dashed_line(to_local(caster.opponent.global_position), to_local(global_position), color, 1, 3, false, true)
 
 func _process(delta):
 	if (mode == Globals.ProjectileMode.TARGETED):
