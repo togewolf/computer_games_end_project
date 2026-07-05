@@ -25,6 +25,6 @@ DEFAULT_PARAMS = {
 CONTINUOUS_PARAMS = {
     "step_chunk_size": 800,        # Update prediction every 0.05 seconds
     "smoothing_frames": 3,         # Average the last n predictions
-    "confidence_threshold": 0.5,
-    "cooldown_per_rune_seconds": 1.3
+    "confidence_threshold": 0.4,
+    "cooldown_per_rune_seconds": 1.2
 }

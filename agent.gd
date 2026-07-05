@@ -61,6 +61,7 @@ class HandledThreat extends RefCounted:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	super()
 
 	wizard_width = shape.shape.radius * 2.0 * scale.x
 	print( "Wizard width: ", wizard_width )
