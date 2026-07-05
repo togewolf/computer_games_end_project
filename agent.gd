@@ -547,7 +547,7 @@ func evaluate_combat_state_adv(threats : Array[IncomingThreatData]) -> Dictionar
 	# Else, stand ground and parry the most immediate threat.
 	debug_safe_target = INF
 	local_threats.sort_custom(func(a,b): return a.distance < b.distance)
-	return {"action": "parry", "parry_target": local_threats[0]}
+1	return {"action": "parry", "parry_target": local_threats[0]}
 
 #endregion
 
