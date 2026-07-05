@@ -6,10 +6,13 @@
 [ext_resource type="Script" uid="uid://k3xqv7pcbf63" path="res://agent.gd" id="3_vbyki"]
 [ext_resource type="Script" uid="uid://cd41dt20v50u4" path="res://voice_manager.gd" id="5_jycnn"]
 [ext_resource type="Texture2D" uid="uid://c7o84fhli0h4g" path="res://assets/arena_background.png" id="6_bgart"]
+[ext_resource type="Texture2D" path="res://assets/wizard_agent.png" id="7_agart"]
 [ext_resource type="Texture2D" uid="uid://crsli1pniw505" path="res://assets/projectile_water.png" id="8_icwat"]
 [ext_resource type="Texture2D" uid="uid://bwl3takt56r6l" path="res://assets/projectile_fire.png" id="9_icfir"]
 [ext_resource type="Texture2D" uid="uid://cktd4d7hskudy" path="res://assets/projectile_nature.png" id="10_icnat"]
 [ext_resource type="Texture2D" uid="uid://bd2ihf1he0x1p" path="res://assets/projectile_light.png" id="11_iclig"]
+[ext_resource type="Script" path="res://game_over.gd" id="12_gover"]
+[ext_resource type="Script" path="res://pause_menu.gd" id="13_pause"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fsirm"]
 size = Vector2(488.00037, 561.99976)
@@ -62,6 +65,42 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.16, 0.18, 0.32, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.44, 0.52, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnhover"]
+bg_color = Color(0.24, 0.27, 0.45, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.66, 0.75, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnpressed"]
+bg_color = Color(0.07, 0.08, 0.15, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.44, 0.52, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [node name="Arena" type="Node2D" unique_id=2107833212]
 script = ExtResource("1_u45fm")
 
@@ -77,6 +116,9 @@ script = ExtResource("3_uj4qe")
 [node name="WizardAgent" parent="." unique_id=1876664981 instance=ExtResource("2_vbyki")]
 position = Vector2(233, 72.00006)
 script = ExtResource("3_vbyki")
+
+[node name="Sprite2D" parent="WizardAgent" index="0" unique_id=1010906370]
+texture = ExtResource("7_agart")
 
 [node name="PerceptionArea" type="Area2D" parent="WizardAgent" unique_id=323163152]
 
@@ -286,3 +328,114 @@ text = "4"
 
 [node name="VoiceManager" type="Node" parent="." unique_id=1774400863]
 script = ExtResource("5_jycnn")
+
+[node name="GameOverLayer" type="CanvasLayer" parent="." unique_id=1912450401]
+process_mode = 3
+visible = false
+script = ExtResource("12_gover")
+
+[node name="Dim" type="ColorRect" parent="GameOverLayer" unique_id=1912450402]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="Panel" parent="GameOverLayer" unique_id=1912450403]
+offset_left = 90.0
+offset_top = 250.0
+offset_right = 390.0
+offset_bottom = 470.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Result" type="Label" parent="GameOverLayer/Panel" unique_id=1912450404]
+offset_left = 0.0
+offset_top = 25.0
+offset_right = 300.0
+offset_bottom = 80.0
+text = "VICTORY!"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 36
+
+[node name="RestartButton" type="Button" parent="GameOverLayer/Panel" unique_id=1912450405]
+offset_left = 60.0
+offset_top = 105.0
+offset_right = 240.0
+offset_bottom = 145.0
+text = "RESTART"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnhover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnpressed")
+
+[node name="MenuButton" type="Button" parent="GameOverLayer/Panel" unique_id=1912450406]
+offset_left = 60.0
+offset_top = 155.0
+offset_right = 240.0
+offset_bottom = 195.0
+text = "MAIN MENU"
+theme_override_colors/font_color = Color(0.8, 0.82, 0.9, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnhover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnpressed")
+
+[node name="PauseLayer" type="CanvasLayer" parent="." unique_id=1912450411]
+process_mode = 3
+visible = false
+script = ExtResource("13_pause")
+
+[node name="Dim" type="ColorRect" parent="PauseLayer" unique_id=1912450412]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="Panel" parent="PauseLayer" unique_id=1912450413]
+offset_left = 90.0
+offset_top = 250.0
+offset_right = 390.0
+offset_bottom = 470.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Title" type="Label" parent="PauseLayer/Panel" unique_id=1912450414]
+offset_left = 0.0
+offset_top = 25.0
+offset_right = 300.0
+offset_bottom = 80.0
+text = "PAUSED"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 36
+
+[node name="ContinueButton" type="Button" parent="PauseLayer/Panel" unique_id=1912450415]
+offset_left = 60.0
+offset_top = 105.0
+offset_right = 240.0
+offset_bottom = 145.0
+text = "CONTINUE"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnhover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnpressed")
+
+[node name="MenuButton" type="Button" parent="PauseLayer/Panel" unique_id=1912450416]
+offset_left = 60.0
+offset_top = 155.0
+offset_right = 240.0
+offset_bottom = 195.0
+text = "MAIN MENU"
+theme_override_colors/font_color = Color(0.8, 0.82, 0.9, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnhover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnpressed")
+
+[connection signal="pressed" from="GameOverLayer/Panel/RestartButton" to="GameOverLayer" method="_on_restart_pressed"]
+[connection signal="pressed" from="GameOverLayer/Panel/MenuButton" to="GameOverLayer" method="_on_menu_pressed"]
+[connection signal="pressed" from="PauseLayer/Panel/ContinueButton" to="PauseLayer" method="_on_continue_pressed"]
+[connection signal="pressed" from="PauseLayer/Panel/MenuButton" to="PauseLayer" method="_on_menu_pressed"]

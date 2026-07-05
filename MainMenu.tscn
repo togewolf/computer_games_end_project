@@ -1,0 +1,140 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" path="res://assets/arena_background.png" id="2_mbg"]
+[ext_resource type="Texture2D" path="res://assets/wizard.png" id="3_mwiz"]
+[ext_resource type="Texture2D" path="res://assets/wizard_agent.png" id="4_mwag"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.16, 0.18, 0.32, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.44, 0.52, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnhover"]
+bg_color = Color(0.24, 0.27, 0.45, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.66, 0.75, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnpressed"]
+bg_color = Color(0.07, 0.08, 0.15, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.44, 0.52, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_menu")
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("2_mbg")
+expand_mode = 1
+stretch_mode = 6
+texture_filter = 1
+
+[node name="Title" type="Label" parent="."]
+offset_left = 0.0
+offset_top = 150.0
+offset_right = 480.0
+offset_bottom = 220.0
+text = "WIZARD DUEL"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 48
+
+[node name="Subtitle" type="Label" parent="."]
+offset_left = 0.0
+offset_top = 222.0
+offset_right = 480.0
+offset_bottom = 250.0
+text = "cast spells - counter elements - defeat the AI"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.8, 0.82, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 14
+
+[node name="PlayerWizard" type="TextureRect" parent="."]
+offset_left = 60.0
+offset_top = 280.0
+offset_right = 188.0
+offset_bottom = 408.0
+texture = ExtResource("3_mwiz")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+
+[node name="AgentWizard" type="TextureRect" parent="."]
+offset_left = 292.0
+offset_top = 280.0
+offset_right = 420.0
+offset_bottom = 408.0
+texture = ExtResource("4_mwag")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+flip_h = true
+
+[node name="StartButton" type="Button" parent="."]
+offset_left = 150.0
+offset_top = 460.0
+offset_right = 330.0
+offset_bottom = 510.0
+text = "START GAME"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnhover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnpressed")
+
+[node name="QuitButton" type="Button" parent="."]
+offset_left = 150.0
+offset_top = 525.0
+offset_right = 330.0
+offset_bottom = 565.0
+text = "QUIT"
+theme_override_colors/font_color = Color(0.8, 0.82, 0.9, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnhover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnpressed")
+
+[node name="Controls" type="Label" parent="."]
+offset_left = 0.0
+offset_top = 620.0
+offset_right = 480.0
+offset_bottom = 700.0
+text = "A/D move   -   aim with mouse
+1 water   2 fire   3 nature   4 light   -   Esc pause"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.7, 0.72, 0.82, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.17, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 13
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_pressed"]

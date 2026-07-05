@@ -30,6 +30,10 @@ func _ready():
 	agent.mana_changed.connect(func(mana): agent_mana_bar.value = mana)
 	agent.opponent = player;
 
+	# End the match when either wizard's health reaches 0
+	player.health_changed.connect(_check_player_defeat)
+	agent.health_changed.connect(_check_agent_defeat)
+
 	voice_manager.voice_command_received.connect(_handle_voice_cast)
 
 func _process(_delta):
@@ -77,3 +81,11 @@ func _handle_voice_cast(effect_name: String):
 		"placeholder_4": print("Placeholder 4 triggered!")
 		"placeholder_5": print("Placeholder 5 triggered!")
 		_: print("Unknown effect received: ", effect_name)
+
+func _check_player_defeat(hp):
+	if hp <= 0:
+		$GameOverLayer.show_result(false)
+
+func _check_agent_defeat(hp):
+	if hp <= 0:
+		$GameOverLayer.show_result(true)
