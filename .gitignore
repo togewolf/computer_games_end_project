@@ -13,7 +13,7 @@ Thumbs.db
 
 # Python
 .idea/
-.__pycache__/
+__pycache__/
 
 # temp files
 *.tmp
